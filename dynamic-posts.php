@@ -63,19 +63,52 @@ function create_block_dynamic_posts_block_init() {
 function render_dynamic_posts($attributes) {
 	$posts = get_posts(
 		[
-			'post_type' => $attributes['selectedPostType'],
-			'category' => $attributes['seletedCategory'],
-			'posts_per_page' => $attributes['postsPerPage']
+		'post_type' => $attributes['selectedPostType'],
+		'category' => $attributes['seletedCategory'], 
+		'posts_per_page' => $attributes['postsPerPage']
 		]
-		);
-	foreach($posts as $post){
-		echo '<h2>'.$post->project_id_number.' '.$post->post_title.'</h2>';
-		echo $post->sounding_end_date.', '.get_the_category_list( ', ', '', $post->ID ).' '.$post->contracting_authority;
-		echo '<p>'.$post->location.' '.$post->investment.'</p>'; 
+	);
+if($posts){ ?>
+	<div class="w3-responsive w3-margin-bottom">
+	<table class="w3-table-all w3-striped w3-bordered w3-hoverable">
+		<tr class="w3-text-white bluish-background">
+			<th>Project ID</th>
+			<th>Project Name</th>
+			<th>Contracting Authority</th>
+			<th>Location</th>
+			<th>Investment(million TZS)</th>
+			<th>Market Sounding End Date</th>
+		</tr>
+	<?php 
+	foreach($posts as $post){ ?>
+		<tr>
+		<td><?php
+			$project_id =  $post->project_id_number;
+			echo $project_id; ?>
+		</td>
+		<td><a href=<?php echo get_permalink(); ?>><?php echo $post->post_title; ?></a></td>
+		<td><?php
+			$project_ca = $post->contracting_authority;
+			echo $project_ca; ?></td>
+		<td> <?php
+				$location =  $post->location;
+				echo $location; ?>
+		</td>
+		<td><?php
+			$investment =  $post->investment;
+			echo $investment; ?>
+		</td>
+		<td><?php
+			$sounding_end_date =  $post->sounding_end_date;
+			echo $sounding_end_date; ?>
+		</td>
+	</tr>
+	<?php } ?>
+	</table>
+	<?php } else 
+	echo '<p>'._e('Sorry, no projects where found').'</p>'; 
 
-	}
-
-	return ob_get_clean();
+return ob_get_clean();
 
 }
 
