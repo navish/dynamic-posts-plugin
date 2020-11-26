@@ -93,7 +93,7 @@ export default function Edit({ attributes, setAttributes }) {
 				}
 			</select>
 			<label> Posts per Page: </label>
-			<input type="text" onBlur = {updatePostsPerPage} value={attributes.postsPerPage} />
+			<input type="text" onChange = {updatePostsPerPage} value={attributes.postsPerPage} />
 		</div>
 	)
 }

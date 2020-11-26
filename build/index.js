@@ -290,7 +290,7 @@ function Edit(_ref) {
     }, category.name);
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", null, " Posts per Page: "), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("input", {
     type: "text",
-    onBlur: updatePostsPerPage,
+    onChange: updatePostsPerPage,
     value: attributes.postsPerPage
   }));
 }

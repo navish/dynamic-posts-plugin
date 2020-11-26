@@ -63,15 +63,16 @@ function create_block_dynamic_posts_block_init() {
 function render_dynamic_posts($attributes) {
 	$posts = get_posts(
 		[
+			'post_type' => $attributes['selectedPostType'],
 			'category' => $attributes['seletedCategory'],
 			'posts_per_page' => $attributes['postsPerPage']
 		]
 		);
 	foreach($posts as $post){
-		echo get_the_post_thumbnail( $post->ID );
-		echo '<h2>'.$post->post_title.'</h2>';
-		echo get_the_category_list( ', ', '', $post->ID );
-		echo '<p>'.$post->post_excerpt.'</p>';
+		echo '<h2>'.$post->project_id_number.' '.$post->post_title.'</h2>';
+		echo $post->sounding_end_date.', '.get_the_category_list( ', ', '', $post->ID ).' '.$post->contracting_authority;
+		echo '<p>'.$post->location.' '.$post->investment.'</p>'; 
+
 	}
 
 	return ob_get_clean();
