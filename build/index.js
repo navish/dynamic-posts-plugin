@@ -230,7 +230,17 @@ function Edit(_ref) {
       });
     });
   }
-  /** If categories have not been set yet, execute this */
+
+  if (!attributes.postTypes) {
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+      url: './../wp-json/wp/v2/types'
+    }).then(function (postTypes) {
+      setAttributes({
+        postTypes: postTypes
+      });
+    });
+  }
+  /** If attributes have not been set yet, execute this */
 
 
   if (!attributes.categories) {
@@ -249,13 +259,28 @@ function Edit(_ref) {
     });
   }
 
+  function updatePostType(event) {
+    setAttributes({
+      selectedPostType: event.target.value
+    });
+  }
+
   function updatePostsPerPage(event) {
     setAttributes({
       postsPerPage: event.target.value
     });
   }
 
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", null, " Project Category "), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("select", {
+  console.log(attributes.postTypes);
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", null, " Post Type "), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("select", {
+    onChange: updatePostType,
+    value: attributes.selectedPostType
+  }, Object.values(attributes.postTypes).map(function (postType) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("option", {
+      value: postType.id,
+      key: postType.id
+    }, postType.name);
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", null, " Project Category "), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("select", {
     onChange: updateCategory,
     value: attributes.selectedCategory
   }, attributes.categories.map(function (category) {
@@ -367,6 +392,12 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])('cre
     html: false
   },
   attributes: {
+    postTypes: {
+      type: 'object'
+    },
+    selectedPostType: {
+      type: 'string'
+    },
     categories: {
       type: 'object'
     },

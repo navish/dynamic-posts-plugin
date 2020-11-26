@@ -31,11 +31,20 @@ export default function Edit({ attributes, setAttributes }) {
 			url: './../wp-json/wp/v2/categories',
 		}).then(categories => {
 			setAttributes({
-				categories: categories,
+				categories : categories,
 			});
 		});
 	}
-	/** If categories have not been set yet, execute this */
+	if (!attributes.postTypes) {
+		apiFetch({
+			url: './../wp-json/wp/v2/types',
+		}).then(postTypes => {
+			setAttributes({
+				postTypes : postTypes,
+			});
+		});
+	}
+	/** If attributes have not been set yet, execute this */
 	if (!attributes.categories) {
 		return 'Loading...';
 	}
@@ -49,15 +58,30 @@ export default function Edit({ attributes, setAttributes }) {
 			selectedCategory: event.target.value,
 		});
 	}
+	function updatePostType(event) {
+		setAttributes({
+			selectedPostType: event.target.value,
+		});
+	}
 
 	function updatePostsPerPage(event) {
 		setAttributes({
 			postsPerPage: event.target.value,
 		});
 	}
-
+	console.log(attributes.postTypes);
 	return (
 		<div>
+			<label> Post Type </label>
+			<select onChange={updatePostType} value={attributes.selectedPostType}>
+				{
+					Object.values(attributes.postTypes).map(postType => {
+						return (
+							<option value={postType.id} key={postType.id}>{postType.name}</option>
+						);
+					})
+				}
+			</select>
 			<label> Project Category </label>
 			<select onChange={updateCategory} value={attributes.selectedCategory}>
 				{

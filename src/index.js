@@ -68,6 +68,12 @@ registerBlockType( 'create-block/dynamic-posts', {
 		html: false,
 	},
 	attributes: {
+		postTypes: {
+			type: 'object',
+		},
+		selectedPostType: {
+			type: 'string',
+		},
 		categories: {
 			type: 'object',
 		},
