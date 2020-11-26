@@ -67,6 +67,17 @@ registerBlockType( 'create-block/dynamic-posts', {
 		// Removes support for an HTML mode.
 		html: false,
 	},
+	attributes: {
+		categories: {
+			type: 'object',
+		},
+		selectedCategory: {
+			type: 'string',
+		},
+		postsPerPage : {
+			type: 'string',
+		}
+	},
 
 	/**
 	 * @see ./edit.js

@@ -4,6 +4,7 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -24,10 +25,51 @@ import './editor.scss';
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit( { className } ) {
+export default function Edit({ attributes, setAttributes }) {
+	if (!attributes.categories) {
+		apiFetch({
+			url: './../wp-json/wp/v2/categories',
+		}).then(categories => {
+			setAttributes({
+				categories: categories,
+			});
+		});
+	}
+	/** If categories have not been set yet, execute this */
+	if (!attributes.categories) {
+		return 'Loading...';
+	}
+	/** If all categories have been deleted, don't blow up the site, run this code snippet */
+	if (!attributes.categories && attributes.categories.length === 0) {
+		return 'No categories found';
+	}
+	
+	function updateCategory(event) {
+		setAttributes({
+			selectedCategory: event.target.value,
+		});
+	}
+
+	function updatePostsPerPage(event) {
+		setAttributes({
+			postsPerPage: event.target.value,
+		});
+	}
+
 	return (
-		<p className={ className }>
-			{ __( 'Dynamic Posts – hello from the editor!', 'dynamic-posts' ) }
-		</p>
-	);
+		<div>
+			<label> Project Category </label>
+			<select onChange={updateCategory} value={attributes.selectedCategory}>
+				{
+					attributes.categories.map(category => {
+						return (
+							<option value={category.id} key={category.id}>{category.name}</option>
+						);
+					})
+				}
+			</select>
+			<label> Posts per Page: </label>
+			<input type="text" onBlur = {updatePostsPerPage} value={attributes.postsPerPage} />
+		</div>
+	)
 }

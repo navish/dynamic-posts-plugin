@@ -56,6 +56,26 @@ function create_block_dynamic_posts_block_init() {
 		'editor_script' => 'create-block-dynamic-posts-block-editor',
 		'editor_style'  => 'create-block-dynamic-posts-block-editor',
 		'style'         => 'create-block-dynamic-posts-block',
+		'render_callback' => 'render_dynamic_posts',
 	) );
 }
+
+function render_dynamic_posts($attributes) {
+	$posts = get_posts(
+		[
+			'category' => $attributes['seletedCategory'],
+			'posts_per_page' => $attributes['postsPerPage']
+		]
+		);
+	foreach($posts as $post){
+		echo get_the_post_thumbnail( $post->ID );
+		echo '<h2>'.$post->post_title.'</h2>';
+		echo get_the_category_list( ', ', '', $post->ID );
+		echo '<p>'.$post->post_excerpt.'</p>';
+	}
+
+	return ob_get_clean();
+
+}
+
 add_action( 'init', 'create_block_dynamic_posts_block_init' );
