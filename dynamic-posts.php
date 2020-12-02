@@ -64,7 +64,7 @@ function render_dynamic_posts($attributes) {
 	$posts = get_posts(
 		[
 		'post_type' => $attributes['selectedPostType'],
-		'category' => $attributes['seletedCategory'], 
+		'category' => $attributes['selectedCategory'], 
 		'posts_per_page' => $attributes['postsPerPage']
 		]
 	);
